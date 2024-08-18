@@ -3,12 +3,7 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 
-app.use(
-  cors({
-    origin:"https://assignment-job-task.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSEORD}@datafind.xfgov3s.mongodb.net/?retryWrites=true&w=majority&appName=datafind`;
