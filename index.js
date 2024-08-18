@@ -3,7 +3,13 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 
-app.use(cors());
+app.use(cors({
+    origin : [
+        "http://localhost:3000",
+        "https://assignment-job-task.vercel.app"
+    ],
+    credentials : true
+}));
 
 
 
