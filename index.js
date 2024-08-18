@@ -6,7 +6,7 @@ const cors = require("cors");
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
+      "http://localhost:3000",
       "https://assignment-job-task.vercel.app/",
       "https://cardoctor-bd.firebaseapp.com",
     ],
