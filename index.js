@@ -5,6 +5,8 @@ const cors = require("cors");
 
 app.use(cors());
 
+
+
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSEORD}@datafind.xfgov3s.mongodb.net/?retryWrites=true&w=majority&appName=datafind`;
 
