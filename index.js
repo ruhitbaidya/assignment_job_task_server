@@ -39,11 +39,11 @@ async function run() {
       .db("assignment_task")
       .collection("products_list");
 
-    app.get("/", (req, res) => {
+    app.get("/", async (req, res) => {
       res.send("hello World");
     });
     app.get("/product/:num", async (req, res) => {
-      console.log(req.params.num);
+
       let pageSkip = 0;
       if (req.params.num === 0) {
         pageSkip = req.params.num === 0 || 0;
@@ -52,6 +52,7 @@ async function run() {
       }
 
       try {
+       
         const productCount = await productCollection.countDocuments();
         const product = await productCollection
           .find()
@@ -63,6 +64,9 @@ async function run() {
         return res.send(err.message);
       }
     });
+
+
+    
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
