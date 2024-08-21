@@ -3,15 +3,12 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 
-app.use(cors({
-    origin : [
-        "http://localhost:3000",
-        "https://assignment-job-task.vercel.app"
-    ],
-    credentials : true
-}));
-
-
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://assignment-job-task.vercel.app"],
+    credentials: true,
+  })
+);
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSEORD}@datafind.xfgov3s.mongodb.net/?retryWrites=true&w=majority&appName=datafind`;
@@ -42,17 +39,47 @@ async function run() {
     app.get("/", async (req, res) => {
       res.send("hello World");
     });
-    app.get("/product/:num", async (req, res) => {
+
+    app.get("/searchText/:num", async (req, res) => {
+      const regex = new RegExp(req.params.num, "i");
+      let findText = { name: { $regex: regex } };
+      const result = await productCollection.find(findText).toArray();
+      return res.send(result);
+    });
+
+    app.get("/brandName/:num", async (req, res) => {
+      const regex = new RegExp(req.params.num, "i");
+      let findText = { brand: { $regex: regex } };
+      const result = await productCollection.find(findText).toArray();
+      return res.send(result);
+    });
+
+    app.get("/categoryname/:num", async (req, res) => {
+      const regex = new RegExp(req.params.num, "i");
+      let findText = { category: { $regex: regex } };
+      const result = await productCollection.find(findText).toArray();
+      return res.send(result);
+    });
+
+    app.get("/highToLowBalance/:num", async (req, res) => {
+      // console.log(req.params.num);
+      const orders = req.params.num.split(",");
+      console.log(orders[0], orders[1] + " well ");
+      const result = await productCollection
+        .find({ price: { $gte: Number(orders[0]), $lte: Number(orders[1])} })
+        .toArray();
+      return res.send(result);
+    });
+    app.get("/product/:text", async (req, res) => {
+      console.log(req.params.text);
 
       let pageSkip = 0;
-      if (req.params.num === 0) {
-        pageSkip = req.params.num === 0 || 0;
+      if (req.params.text === 0) {
+        pageSkip = req.params.text === 0 || 0;
       } else {
-        pageSkip = req.params.num;
+        pageSkip = req.params.text;
       }
-
       try {
-       
         const productCount = await productCollection.countDocuments();
         const product = await productCollection
           .find()
@@ -64,9 +91,6 @@ async function run() {
         return res.send(err.message);
       }
     });
-
-
-    
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
